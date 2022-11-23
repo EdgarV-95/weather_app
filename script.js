@@ -1,44 +1,70 @@
-const getCity = document.querySelector('#search');
+const city = document.querySelector('#search');
 const searchIcon = document.querySelector('#search-icon');
 
 searchIcon.addEventListener('click', () => {
-  createWeatherCard();
+  resetContent();
+  getWeather(city.value);
 });
 
 const getWeather = async (city) => {
   try {
-    let weather = await fetch(
+    const weather = await fetch(
       `https://goweather.herokuapp.com/weather/${city}`
     );
-    let data = await weather.json();
-    const weatherData = processData(data);
-
-    return weatherData;
+    const weatherData = await weather.json();
+    createWeatherCard(weatherData);
   } catch (err) {
-    console.log(`Error: ${err}`);
+    console.log(err);
   }
 };
 
-const processData = (data) => {
-  let jsonData = {
-    temperature: data.temperature,
-    wind: data.wind,
-    description: data.description,
-    forecast: data.forecast,
-  };
-  return jsonData;
-};
-
-let createWeatherCard = () => {
+const createWeatherCard = (weatherData) => {
   const newDiv = document.createElement('div');
   newDiv.classList.add('weatherCard');
   document.querySelector('main').append(newDiv);
-  // make it async and add an await
-  let values = getWeather(getCity.value);
-  console.log(values);
-  // newDiv.innerHTML = `
-  //    <div class='test'>The weather in ${getCity.value} is ${values}</div>
-  //    <div class='test2'>The temperature is ${values}</div>
-  //    <div class='test2'>Wind strength is ${values}</div>
-  //   `;
+  newDiv.innerHTML = `
+  <div class="today">
+    <div class="w-today">Today: ${
+      weekdays[day]
+    } - ${dd}/${mm}/${yyyy}</div>
+    <div class="w-description">The weather in ${city.value}: ${
+    weatherData.description
+  }</div>
+    <div class="w-temperature">The temperature: ${
+      weatherData.temperature
+    }</div>
+    <div class="w-wind">Wind strength: ${weatherData.wind}</div>
+  </div>
+  <div class="forecast"> 
+    <div class="forecast-day">${weekdays[day + 1]}: ${
+    weatherData.forecast[0].temperature
+  } <br>Wind strength: ${weatherData.forecast[0].wind}</div>
+    <div class="forecast-day">${weekdays[day + 2]}: ${
+    weatherData.forecast[1].temperature
+  } <br>Wind strength: ${weatherData.forecast[1].wind}</div>
+    <div class="forecast-day">${weekdays[day + 3]}: ${
+    weatherData.forecast[2].temperature
+  } <br>Wind strength: ${weatherData.forecast[2].wind}</div>
+  </div>`;
 };
+
+const resetContent = () => {
+  if (document.querySelector('.weatherCard')) {
+    document.querySelector('.weatherCard').remove();
+  } else return;
+};
+
+const date = new Date();
+var weekdays = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+];
+let day = date.getDay();
+let dd = date.getDate();
+let mm = date.getMonth() + 1;
+let yyyy = date.getFullYear();

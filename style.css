@@ -1,6 +1,7 @@
 :root {
   --primary: #546e7a;
   --secondary: #819ca9;
+  --third: rgba(82, 152, 167, 1);
 }
 
 * {
@@ -45,6 +46,10 @@
   gap: 1vh;
 }
 
+label {
+  font-weight: bold;
+}
+
 #search {
   border: none;
   border-bottom: 2px solid black;
@@ -61,4 +66,24 @@ main {
   background-color: var(--secondary);
   height: 82.5vh;
   width: 100vw;
+  display: flex;
+  padding-top: 10vh;
+  justify-content: center;
+}
+
+.weatherCard {
+  background: var(--third);
+  border: 2px solid black;
+  height: 40vh;
+  padding: 5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5vh;
+}
+
+.forecast {
+  display: flex;
+  gap: 1.5vw;
 }
