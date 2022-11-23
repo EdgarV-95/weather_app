@@ -7,14 +7,18 @@ searchIcon.addEventListener('click', () => {
 });
 
 const getWeather = async (city) => {
-  try {
-    const weather = await fetch(
-      `https://goweather.herokuapp.com/weather/${city}`
-    );
-    const weatherData = await weather.json();
-    createWeatherCard(weatherData);
-  } catch (err) {
-    console.log(err);
+  if (city.length === 0) {
+    alert('Please enter a city name.');
+  } else {
+    try {
+      const weather = await fetch(
+        `https://goweather.herokuapp.com/weather/${city}`
+      );
+      const weatherData = await weather.json();
+      createWeatherCard(weatherData);
+    } catch (err) {
+      console.log(err);
+    }
   }
 };
 
